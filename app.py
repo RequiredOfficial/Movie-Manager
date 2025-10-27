@@ -128,6 +128,47 @@ def on_select(event):
             rating_entr.delete(0, tk.END)
             rating_entr.insert(0, values[3])
 
+def setup_ui():
+    root = tk.Tk()
+    root.title("Movie Manager")
+
+    tk.Label(root, text="Название").grid(row=0, column=0, padx=5, pady=5)
+    global title_entr
+    title_entr = tk.Entry(root)
+    title_entr.grid(row=0, column=1, padx=5, pady=5)
+
+    tk.Label(root, text="Год").grid(row=1, column=0, padx=5, pady=5)
+    global year_entr
+    year_entr = tk.Entry(root)
+    year_entr.grid(row=1, column=1, padx=5, pady=5)
+
+    tk.Label(root, text="Рейтинг").grid(row=2, column=0, padx=5, pady=5)
+    global rating_entr
+    rating_entr = tk.Entry(root)
+    rating_entr.grid(row=2, column=1, padx=5, pady=5)
+
+    btn_add = tk.Button(root, text="Добавить", command=on_add_movie)
+    btn_add.grid(row=3, column=0, padx=5, pady=5)
+
+    btn_update = tk.Button(root, text="Обновить", command=on_update_movie)
+    btn_update.grid(row=3, column=1, padx=5, pady=5)
+
+    btn_delete = tk.Button(root, text="Удалить", command=on_delete_movie)
+    btn_delete.grid(row=3, column=2, padx=5, pady=5)
+
+    global tree
+    columns = ("id", "title", "year", "rating")
+    tree = ttk.Treeview(root, columns=columns, show='headings')
+    for col in columns:
+        tree.heading(col, text=col.capitalize())
+    tree.grid(row=4, column=0, columnspan=3, padx=5, pady=5)
+
+    tree.bind('<<TreeviewSelect>>', on_select)
+
+    load_movies()
+
+    root.mainloop()
 
 if __name__ == "__main__":
     setup_db()
+    setup_ui()
