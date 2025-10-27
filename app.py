@@ -147,20 +147,32 @@ def setup_ui():
     rating_entr = tk.Entry(root)
     rating_entr.grid(row=2, column=1, padx=5, pady=5)
 
-    btn_add = tk.Button(root, text="Добавить", command=on_add_movie)
+    btn_add = tk.Button(root, text="➕Добавить", command=on_add_movie)
     btn_add.grid(row=3, column=0, padx=5, pady=5)
 
-    btn_update = tk.Button(root, text="Обновить", command=on_update_movie)
+    btn_update = tk.Button(root, text="✏️Изменить", command=on_update_movie)
     btn_update.grid(row=3, column=1, padx=5, pady=5)
 
-    btn_delete = tk.Button(root, text="Удалить", command=on_delete_movie)
+    btn_delete = tk.Button(root, text="🗑️Удалить", command=on_delete_movie)
     btn_delete.grid(row=3, column=2, padx=5, pady=5)
+
+    # Hover
+    def on_enter(event):
+        event.widget.config(background='lightgreen')
+
+    def on_leave(event):
+        event.widget.config(background='SystemButtonFace')
+
+    for btn in [btn_add, btn_update, btn_delete]:
+        btn.bind("<Enter>", on_enter)
+        btn.bind("<Leave>", on_leave)
 
     global tree
     columns = ("id", "title", "year", "rating")
     tree = ttk.Treeview(root, columns=columns, show='headings')
     for col in columns:
         tree.heading(col, text=col.capitalize())
+        tree.column(col, width=100)
     tree.grid(row=4, column=0, columnspan=3, padx=5, pady=5)
 
     tree.bind('<<TreeviewSelect>>', on_select)
